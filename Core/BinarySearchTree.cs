@@ -107,7 +107,59 @@ public class BinarySearchTree
     
     public bool Remove(int value)
     {
-        
+        var current = _root;
+        Node prev;
+        while (true)
+        {
+            if (current == null)
+                return false;
+            
+            if (value == current.Value)
+            {
+                if (current.Left == null && current.Right == null)
+                {
+                    if (current == _root)
+                        _root = null;
+                    else if (prev.Left == current)
+                        prev.Left = null;
+                    else
+                        prev.Right = null;
+                }
+                else if (current.Left != null && current.Right == null)
+                {
+                    if (current == _root)
+                        _root = current.Left;
+                    else if (prev.Left == current)
+                        prev.Left = current.Left;
+                    else
+                        prev.Right = current.Left;
+                }
+                else if (current.Left == null && current.Right != null)
+                {
+                    if (current == _root)
+                        _root = current.Right;
+                    else if (prev.Left == current)
+                        prev.Left = current.Right;
+                    else
+                        prev.Right = current.Right;
+                }
+                else
+                {
+                    // TODO: Переписать содержимое этого стейтмента.
+                    if (current == _root)
+                        _root = current.Right;
+                    else if (prev.Left == current)
+                        prev.Left = current.Right;
+                    else
+                        prev.Right = current.Right;
+                }
+                
+                return true;
+            }
+
+            prev = current;
+            current = value > current.Value ? current.Right : current.Left;
+        }
     }
 
     // Исключение тут используется в качестве оригинального способа завершить все рекурсивно вызванные методы.
@@ -136,6 +188,7 @@ public class BinarySearchTree
         {
             if (current == null)
                 return false;
+            
             if (value == current.Value)
                 return true;
             
