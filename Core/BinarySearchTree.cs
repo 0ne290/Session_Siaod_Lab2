@@ -108,7 +108,7 @@ public class BinarySearchTree
     public bool Remove(int value)
     {
         var current = _root;
-        Node prev;
+        Node prev = null!;
         while (true)
         {
             if (current == null)
@@ -145,13 +145,23 @@ public class BinarySearchTree
                 }
                 else
                 {
-                    // TODO: Переписать содержимое этого стейтмента.
-                    if (current == _root)
-                        _root = current.Right;
-                    else if (prev.Left == current)
-                        prev.Left = current.Right;
-                    else
+                    var remove = current;
+                    prev = current;
+                    current = current.Right!;
+                    if (current.Left == null)
                         prev.Right = current.Right;
+                    else
+                    {
+                        while (current.Left != null)
+                        {
+                            prev = current;
+                            current = current.Left;
+                        }
+
+                        prev.Left = current.Right;
+                    }
+
+                    remove.Value = current.Value;
                 }
                 
                 return true;
